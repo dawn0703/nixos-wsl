@@ -13,6 +13,7 @@
 │   ├── wsl.nix        # NixOS-WSL 基线、默认用户、interop 与可选 Docker/GPU
 │   ├── nix.nix        # Flakes、国内镜像源、nh（NH_FLAKE + 自动清理）与 GC
 │   ├── nix-ld.nix     # programs.nix-ld + 动态运行库（VS Code/Cursor Remote-WSL）
+│   ├── fonts.nix      # 开源字体栈（Maple Mono NF CN / Inter / Noto CJK）与 fontconfig
 │   ├── sshd.nix       # OpenSSH 服务（监听 22 与 520 端口）
 │   └── locale.nix     # UTF-8 Locale 与时区
 └── home/
@@ -64,17 +65,19 @@ wsl -d NixOS
 
 ### 2. 日常更新与维护（WSL 内）
 
-先将本仓库复制到 `~/nixos-wsl`，按需修改 [profiles.nix](./profiles.nix) 后执行：
+先将本仓库克隆到 `~/.dotfiles`，按需修改 [profiles.nix](./profiles.nix) 后执行：
 
 ```bash
 # 使用 nh 应用系统与 Home Manager 配置（内置别名 nrs）
-nh os switch ~/nixos-wsl -H wsl
+nh os switch ~/.dotfiles -H wsl
 
 # 清理旧一代与 Nix store
 nh clean all --keep 3
 ```
 
 ### 3. 开启 Herdr 多 Agent 会话
+
+Windows 侧已安装原生 Herdr（存在 `/mnt/c/Users/<username>/.config/herdr-app`）时，Home Manager 激活阶段会自动同步 `skillshare`、`usage-limits` mod 与 `herdr-skillshare` 布局（重启 Herdr 窗口生效）。
 
 ```bash
 herdr          # 启动/附着 agent-native 终端工作区

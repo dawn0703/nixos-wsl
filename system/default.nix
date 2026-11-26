@@ -9,6 +9,7 @@
     ./wsl.nix
     ./nix.nix
     ./nix-ld.nix
+    ./fonts.nix
     ./locale.nix
     ./sshd.nix
   ];

@@ -19,7 +19,7 @@
       fish_vi_key_bindings
 
       set -gx NH_ROM 1
-      set -gx NH_FLAKE /home/${profile.username}/nixos-wsl
+      set -gx NH_FLAKE /home/${profile.username}/.dotfiles
 
       bind -M insert jk "set fish_bind_mode default; commandline -f backward-char force-repaint"
     '';

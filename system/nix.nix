@@ -24,7 +24,7 @@
   # 统一的系统更新与旧代清理前端
   programs.nh = {
     enable = true;
-    flake = "/home/${profile.username}/nixos-wsl";
+    flake = "/home/${profile.username}/.dotfiles";
     clean = {
       enable = true;
       extraArgs = "--keep-since 7d --keep 3";
