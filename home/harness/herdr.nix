@@ -28,15 +28,18 @@ in
     if [ -d "$winHerdrDir" ]; then
       mkdir -p "$winHerdrDir/mods" "$winHerdrDir/layouts"
 
-      ${pkgs.rsync}/bin/rsync -rl --delete --no-perms --no-owner --no-group \
+      ${pkgs.rsync}/bin/rsync -rl --delete --no-perms --no-owner --no-group --chmod=Du+w,Fu+w \
         "${./herdr-assets/mods/skillshare}/" "$winHerdrDir/mods/skillshare/"
-      ${pkgs.rsync}/bin/rsync -rl --delete --no-perms --no-owner --no-group \
+      ${pkgs.rsync}/bin/rsync -rl --delete --no-perms --no-owner --no-group --chmod=Du+w,Fu+w \
         "${./herdr-assets/mods/usage-limits}/" "$winHerdrDir/mods/usage-limits/"
 
+      rm -f "$winHerdrDir/layouts/"*-herdr-skillshare.json "$winHerdrDir/layouts/"*-herdr-skillshare.png
       cp -f --no-preserve=mode \
         "${./herdr-assets/layouts/herdr-skillshare.json}" \
+        "$winHerdrDir/layouts/herdr-skillshare.json"
+      cp -f --no-preserve=mode \
         "${./herdr-assets/layouts/herdr-skillshare.png}" \
-        "$winHerdrDir/layouts/"
+        "$winHerdrDir/layouts/herdr-skillshare.png"
 
       if [ -f "$winHerdrDir/shared.json" ]; then
         currentLayout=$(${pkgs.jq}/bin/jq -r '.layout // empty' "$winHerdrDir/shared.json" 2>/dev/null || true)
