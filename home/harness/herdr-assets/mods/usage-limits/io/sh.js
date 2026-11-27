@@ -21,7 +21,7 @@ function toWslArg(arg) {
 }
 
 const runWsl = (args, opts) =>
-  run("wsl.exe", ["--", "bash", "-lc", 'exec sh "$@"', "_", ...args.map(toWslArg)], opts);
+  run("wsl.exe", ["-e", "/bin/sh", "-lc", 'exec sh "$@"', "_", ...args.map(toWslArg)], opts);
 
 async function gitBundledShell() {
   const core = (await exec("git", ["--exec-path"]).catch(() => null))?.stdout.trim() ?? "";
