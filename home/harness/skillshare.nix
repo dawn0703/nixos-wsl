@@ -43,4 +43,11 @@ in {
       ${skillshareCli}/bin/skillshare init --no-copy --all-targets --no-git --no-skill || true
     fi
   '';
+
+  # [Activation]
+  home.activation.skillshareSync = lib.hm.dag.entryAfter [ "linkGeneration" "ensureSkillshareInit" ] ''
+    if [ -f "$HOME/.config/skillshare/config.yaml" ]; then
+      run ${skillshareCli}/bin/skillshare sync --quiet || echo "warning: skillshare sync failed"
+    fi
+  '';
 }

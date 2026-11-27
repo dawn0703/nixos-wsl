@@ -55,6 +55,12 @@
       za  = "zellij attach";
       zl  = "zellij list-sessions";
       zk  = "zellij kill-session";
+
+      # [WSL Drives]
+      cdd = "cd /mnt/d";
+      cdr = "cd /mnt/d/Research";
+      cdp = "cd /mnt/d/Projects";
+      cds = "cd /mnt/d/Study";
     };
   };
 }

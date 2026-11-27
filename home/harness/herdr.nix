@@ -7,12 +7,17 @@
 { lib, pkgs, profile, ... }:
 let
   winUser = profile.windowsUsername or profile.username;
+  herdrSkill = pkgs.runCommand "herdr-skill.md" { } ''
+    ${pkgs.herdr}/bin/herdr --skill > "$out"
+  '';
 in
 {
   home.packages = [
     pkgs.herdr
     pkgs.herdr-core
   ];
+
+  xdg.configFile."skillshare/skills/herdr/SKILL.md".source = herdrSkill;
 
   xdg.configFile."herdr/config.toml".text = ''
     onboarding = false
