@@ -10,6 +10,7 @@
     ./nix.nix
     ./nix-ld.nix
     ./fonts.nix
+    ./keyring.nix
     ./locale.nix
     ./sshd.nix
   ];
