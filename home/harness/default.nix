@@ -13,5 +13,6 @@
     ./cursor.nix
     ./pi.nix
     ./agy.nix
+    ./antigravity-tools
   ];
 }
