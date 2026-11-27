@@ -4,7 +4,7 @@
 # Scope: Home Manager
 # ---
 
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 let
   agyCli = pkgs.stdenv.mkDerivation {
     pname = "antigravity-cli";
@@ -35,6 +35,35 @@ let
       mainProgram = "agy";
     };
   };
+
+  agyDefaults = pkgs.writeText "agy-defaults.json" (builtins.toJSON {
+    statusLine = {
+      type = "command";
+      command = "sh ${./herdr-assets/mods/usage-limits/helpers/agy-statusline.sh}";
+      stack_with_default = true;
+    };
+  });
 in {
   home.packages = [ agyCli ];
+
+  # [StatusLine]
+  # 保留用户现有 settings.json，自动补齐 usage-limits 额度统计所需 statusLine 钩子
+  home.activation.syncAgyStatusLine = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    agyDir="$HOME/.gemini/antigravity-cli"
+    target="$agyDir/settings.json"
+    mkdir -p "$agyDir"
+
+    if [ ! -f "$target" ] || ! ${pkgs.jq}/bin/jq -e . "$target" >/dev/null 2>&1; then
+      cp -f --no-preserve=mode "${agyDefaults}" "$target"
+      chmod 600 "$target"
+    else
+      tmpFile=$(mktemp "$agyDir/.settings.json.XXXXXX")
+      if ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "${agyDefaults}" "$target" > "$tmpFile"; then
+        mv "$tmpFile" "$target"
+        chmod 600 "$target"
+      else
+        rm -f "$tmpFile"
+      fi
+    fi
+  '';
 }
