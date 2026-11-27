@@ -4,7 +4,7 @@
 # Scope: Home Manager
 # ---
 
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 let
   skillshareCli = pkgs.stdenv.mkDerivation rec {
     pname = "skillshare";
@@ -35,4 +35,12 @@ let
   };
 in {
   home.packages = [ skillshareCli ];
+
+  # [Init]
+  # 首次激活时自动初始化 skillshare 配置目录，避免 Herdr skillshare 面板报错
+  home.activation.ensureSkillshareInit = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ ! -f "$HOME/.config/skillshare/config.yaml" ]; then
+      ${skillshareCli}/bin/skillshare init --no-copy --all-targets --no-git --no-skill || true
+    fi
+  '';
 }
